@@ -23,11 +23,19 @@
             </Style>
         </Grid.Resources>
 
+        <StackPanel>
         <Label Content="{Binding CurrentMeasure.Value}"
-               
                />
 
+            <ListBox ItemsSource="{Binding Measures}" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Value}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
+        </StackPanel>
 
     </Grid>
 </Window>

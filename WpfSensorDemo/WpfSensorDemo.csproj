@@ -54,6 +54,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\DispatchService.cs" />
     <Compile Include="Models\Base.cs" />
     <Compile Include="Services\MockSensorsService.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />

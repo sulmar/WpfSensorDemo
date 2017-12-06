@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WpfSensorDemo.Common;
 using WpfSensorDemo.IServices;
 using WpfSensorDemo.Models;
 using WpfSensorDemo.Services;
@@ -27,6 +30,8 @@ namespace WpfSensorDemo.ViewModels
             }
         }
 
+        public ObservableCollection<Measure> Measures { get; set; }
+
         public SensorViewModel()
             : this(new MockSensorsService())
         {
@@ -37,15 +42,28 @@ namespace WpfSensorDemo.ViewModels
         {
             this.sensorsService = sensorsService;
 
+            this.Measures = new ObservableCollection<Measure>();
+
             this.sensorsService.SensorChanged += SensorsService_SensorChanged;
 
         }
 
         private void SensorsService_SensorChanged(object sender, Models.Measure e)
         {
-            Console.WriteLine(e.Value);
+            Trace.WriteLine(e.Value);
+
+            // error
+            // Measures.Add(e);
+
+            // thread-safe
+            DispatchService.Invoke(() =>
+            {
+                this.Measures.Add(e);
+            });
 
             CurrentMeasure = e;
+
+            
         }
     }
 }

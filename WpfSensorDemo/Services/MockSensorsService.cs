@@ -12,7 +12,7 @@ namespace WpfSensorDemo.Services
     {
         public event EventHandler<Measure> SensorChanged;
 
-        private System.Timers.Timer timer;
+        private System.Threading.Timer timer;
         private readonly Random random = new Random();
 
         protected void OnSensorChanged(Measure measure)
@@ -23,10 +23,15 @@ namespace WpfSensorDemo.Services
 
         public MockSensorsService()
         {
-            timer = new System.Timers.Timer();
-            timer.Interval = TimeSpan.FromSeconds(1).TotalMilliseconds;
-            timer.Elapsed += Timer_Elapsed;
-            timer.Start();
+            timer = new System.Threading.Timer(new System.Threading.TimerCallback(CallbackMethod), null, TimeSpan.FromSeconds(0), TimeSpan.FromSeconds(1));
+        }
+
+        private void CallbackMethod(object oStateObject)
+        {
+            var measure = new Measure(random.NextDouble());
+
+            OnSensorChanged(measure);
+
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
